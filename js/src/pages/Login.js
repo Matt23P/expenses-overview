@@ -5,6 +5,7 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { EoUser } from '../utils/EoUser';
 import { ensureNotAuthenticated } from '../utils/Helpers';
+import '../styles/Login.css';
 
 
 function Login() {
@@ -74,15 +75,25 @@ function Login() {
                                 <div className='text-gray-800 text-3xl text-center font-semibold'>
                                     Login successful!
                                 </div>
-                                <div className='text-gray-800 text-lg text-center mt-3'>
+                                <div className='text-gray-800 text-lg text-center mt-3 mb-3'>
                                     You will be redirected to home page in few seconds.
                                 </div>
-                                <Spinner
-                                    size='lg'
-                                    color="default"
-                                    label='Redirecting...'
-                                    className='mt-8 mb-5'
-                                />
+
+                            </div>
+                        </div>
+
+                        <div className='mt-12'>
+                            <div class="spinner">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
                             </div>
                         </div>
                     </>
