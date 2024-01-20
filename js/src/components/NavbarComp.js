@@ -1,8 +1,8 @@
 import React from 'react'
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
-
+import { EoUser } from '../utils/EoUser';
 
 function NavbarComp() {
     return (
@@ -16,14 +16,28 @@ function NavbarComp() {
                         </Link>
                     </NavbarBrand>
                 </NavbarContent>
-                <NavbarContent justify="end">
-                    <NavbarItem className="hidden lg:flex gap-4">
-                        <Link href="/login" color='foreground' className='text-lg'>Login</Link>
-                    </NavbarItem>
-                    <NavbarItem>
-                        <Link href="/signup" color='foreground' className='text-lg'>Sign Up</Link>
-                    </NavbarItem>
-                </NavbarContent>
+                {EoUser.isLogged ? (
+                    <NavbarContent justify="end">
+                        <NavbarItem className="hidden lg:flex gap-4">
+                            <Link href="/expenses" color='foreground' className='text-lg'>Expenses</Link>
+                        </NavbarItem>
+                        <NavbarItem className="hidden lg:flex gap-4">
+                            <Link href="/analytics" color='foreground' className='text-lg'>Analytics</Link>
+                        </NavbarItem>
+                        <NavbarItem>
+                            <Link href="/" color='foreground' className='text-lg' onClick={() => { EoUser.logout() }}>Logout</Link>
+                        </NavbarItem>
+                    </NavbarContent>
+                ) : (
+                    <NavbarContent justify="end">
+                        <NavbarItem className="hidden lg:flex gap-4">
+                            <Link href="/login" color='foreground' className='text-lg'>Login</Link>
+                        </NavbarItem>
+                        <NavbarItem>
+                            <Link href="/signup" color='foreground' className='text-lg'>Sign Up</Link>
+                        </NavbarItem>
+                    </NavbarContent>
+                )}
             </Navbar>
         </>
     );
