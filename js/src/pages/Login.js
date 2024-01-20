@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Link, Spinner } from '@nextui-org/react'
+import { Button, Link } from '@nextui-org/react'
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { EoUser } from '../utils/EoUser';
@@ -27,7 +27,6 @@ function Login() {
                 setErrMsg('');
             }, 5000);
 
-            // Wyczyszczenie timeoutu w przypadku odmontowania komponentu
             return () => clearTimeout(timeoutId);
         }
     }, [errMsg]);
@@ -147,9 +146,9 @@ function Login() {
                                 </Link>
                             </div>
                         </div>
-                        <div className={errMsg ? 'flex flex-col justify-center items-center rounded-3xl border bg-red-300 w-1/4 h-auto mt-8' : 'hidden'}>
+                        <div className={errMsg ? 'flex flex-col justify-center items-center rounded-3xl border bg-red-300 w-1/4 h-auto mt-8 text-center' : 'hidden'}>
                             {errMsg && (
-                                <div>
+                                <div className='mt-1 mb-1'>
                                     {errMsg}
                                 </div>
                             )}

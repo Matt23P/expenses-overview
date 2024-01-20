@@ -7,7 +7,7 @@ import { EoUser } from '../utils/EoUser';
 function NavbarComp() {
     return (
         <>
-            <Navbar shouldHideOnScroll isBordered className='bg-gray-300 flex justify-center'>
+            <Navbar shouldHideOnScroll isBordered className='bg-gray-300 flex justify-center' style={{ boxShadow: "3px 3px 30px 5px rgba(62,66,66,0.35)" }}>
                 <NavbarContent className="hidden sm:flex gap-4" justify="center">
                     <NavbarBrand className='flex justify-center items-cente' justify="center">
                         <Link href="/" color='foreground' className='font-semibold text-4xl text-gray-800'>
