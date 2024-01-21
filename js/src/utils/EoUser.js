@@ -26,7 +26,7 @@ class AppUser {
     update(updatedUser) {
         this.#id = updatedUser.id;
         this.#username = updatedUser.username;
-        this.#email = updatedUser.emaill;
+        this.#email = updatedUser.email;
         this.#creationDate = updatedUser.creationDate;
         this.#userCurrency = updatedUser.userCurrency;
 

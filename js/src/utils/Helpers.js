@@ -55,3 +55,21 @@ function pad(obj, count = 2, char = '0', start = true) {
         ? str.padStart(count, char)
         : str.padEnd(count, char);
 }
+
+export function compileUrl(url, params) {
+    url = String(url);
+    for (let [key, value] of Object.entries(params)) {
+        url = url.replace(`{${key}}`, String(value));
+    }
+    return url;
+}
+
+export function handleApiResponse(res) {
+    const status = res.status;
+    if (status === 404) {
+        console.log("Resources not found!")
+        return null;
+    }
+
+    return res.data;
+}

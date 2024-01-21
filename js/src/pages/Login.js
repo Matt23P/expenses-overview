@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { EoUser } from '../utils/EoUser';
 import { ensureNotAuthenticated } from '../utils/Helpers';
 import '../styles/Login.css';
+import { login } from '../utils/Backend';
 
 
 function Login() {
@@ -40,11 +41,11 @@ function Login() {
             password: pwd,
         };
 
-        const response = null;
+        const response = await login(request);
 
         if (response !== null) {
             if (response.status) {
-
+                EoUser.update(response.user)
                 setLoginSuccess(true);
                 setTimeout(() => {
                     navigate('/');
@@ -119,8 +120,8 @@ function Login() {
                                         Password:
                                     </label>
                                     <input
-                                        type='password'
-                                        id='password'
+                                        type='pwd'
+                                        id='pwd'
                                         autoComplete='current-password'
                                         value={pwd}
                                         onChange={(e) => setPwd(e.target.value)}

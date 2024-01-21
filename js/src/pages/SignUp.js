@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, Link } from '@nextui-org/react';
+import { Button, Link, Autocomplete, AutocompleteItem } from '@nextui-org/react';
 import { ensureNotAuthenticated } from '../utils/Helpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { signup } from '../utils/Backend';
+import { currencies } from '../utils/Currencies';
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,32}$/;
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -37,6 +39,13 @@ function SignUp() {
     const [valMsg, setValMsg] = useState('');
     const [signupSuccess, setSignupSuccess] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const [currency, setCurrency] = useState('');
+
+    const onCurrencyChange = (value) => {
+        setCurrency(value);
+        console.log(value);
+    }
 
     useEffect(() => {
         const result = isEmailValid(email)
@@ -115,11 +124,11 @@ function SignUp() {
         const request = {
             email: email,
             username: username,
-            password: pwd,
+            pwd: pwd,
+            currency: currency
         }
 
-        const response = null;
-
+        const response = await signup(request);
         if (response !== null) {
             if (response.status) {
                 setSignupSuccess(true);
@@ -225,6 +234,21 @@ function SignUp() {
                                         onChange={(e) => setMatchPwd(e.target.value)}
                                         className='rounded-lg'
                                     />
+
+                                    <Autocomplete
+                                        isRequired
+                                        label="Select currency"
+                                        className="mt-4 w-1/3"
+                                        size='md'
+                                        allowsCustomValue={false}
+                                        onSelectionChange={onCurrencyChange}
+                                    >
+                                        {currencies.map((currency) => (
+                                            <AutocompleteItem key={currency.value} value={currency.value}>
+                                                {currency.label}
+                                            </AutocompleteItem>
+                                        ))}
+                                    </Autocomplete>
 
 
                                     <Button

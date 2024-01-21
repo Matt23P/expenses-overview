@@ -14,4 +14,12 @@ public class CreateUserRequest {
     private String username;
     private String password;
     private String userCurrency;
+
+    @Override
+    public String toString() {
+        return "\nemail: " + email + "\n" +
+                "username: " + username + "\n" +
+                "password: " + password + "\n" +
+                "user currency: " + userCurrency;
+    }
 }
