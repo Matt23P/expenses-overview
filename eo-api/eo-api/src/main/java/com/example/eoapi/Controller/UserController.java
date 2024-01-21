@@ -1,6 +1,8 @@
 package com.example.eoapi.Controller;
 
 import com.example.eoapi.Request.CreateUserRequest;
+import com.example.eoapi.Request.LoginRequest;
+import com.example.eoapi.Response.LoginResponse;
 import com.example.eoapi.Response.StatusMessage;
 import com.example.eoapi.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,12 @@ public class UserController {
     @PostMapping(path = "/signup")
     public ResponseEntity<StatusMessage> signUpUser(@RequestBody CreateUserRequest request) {
         StatusMessage response = userService.signUpUser(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/login")
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginRequest request) {
+        LoginResponse response = userService.loginUser(request);
         return ResponseEntity.ok(response);
     }
 }

@@ -1,8 +1,11 @@
 package com.example.eoapi.Service;
 
+import com.example.eoapi.DTO.UserDTO;
 import com.example.eoapi.Entity.User;
 import com.example.eoapi.Repository.UserRepository;
 import com.example.eoapi.Request.CreateUserRequest;
+import com.example.eoapi.Request.LoginRequest;
+import com.example.eoapi.Response.LoginResponse;
 import com.example.eoapi.Response.StatusMessage;
 import com.example.eoapi.Utils.Currencies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -62,6 +66,33 @@ public class UserServiceImpl implements UserService {
         } else {
             logger.log(Level.INFO, "User with email {" + request.getEmail() + "} already exists.");
             return new StatusMessage(false, "User with given email already exists.");
+        }
+    }
+
+    @Override
+    public LoginResponse loginUser(LoginRequest request) {
+        String userEmail = request.getEmail();
+        if (userRepository.existsUserByEmail(userEmail)) {
+            try {
+                User user = userRepository.getUserByEmail(userEmail);
+                if(this.passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                    UserDTO userDTO = new UserDTO(
+                            user.getUserId(),
+                            user.getUsername(),
+                            user.getEmail(),
+                            user.getCreationDate(),
+                            user.getUserCurrency()
+                    );
+                    return new LoginResponse(userDTO, true, "");
+                } else {
+                    return new LoginResponse(null, false, "Wrong email or password.");
+                }
+            } catch (JpaSystemException jpaEx) {
+                logger.log(Level.WARNING, "Could not get user by email {" + userEmail + "}: " + jpaEx.getMessage());
+                return new LoginResponse(null, false, "Error while login process - please try again later.");
+            }
+        } else {
+            return new LoginResponse(null, false, "Wrong email or password.");
         }
     }
 

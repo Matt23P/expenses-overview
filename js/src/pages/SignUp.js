@@ -211,7 +211,7 @@ function SignUp() {
                                     />
 
                                     <label htmlFor='matchpwd' className='mt-3'>
-                                        Repeat password:
+                                        Confirm password:
                                     </label>
                                     <input
                                         type='password'
