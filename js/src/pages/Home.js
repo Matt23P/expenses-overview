@@ -21,7 +21,7 @@ function Home() {
             <div className='flex justify-center mt-6'>
                 <div className='flex flex-row gap-8'>
                     <Button radius='large' variant='ghost' style={{ boxShadow: "12px 12px 30px 5px rgba(62,66,66,0.35)" }}>
-                        <Link href={EoUser.isLogged ? '/' : 'login'}
+                        <Link href={EoUser.isLogged ? '/expenses' : '/login'}
                             color='foreground'
                             className='flex flex-row justify-center items-center'>
                             Get Started <FontAwesomeIcon icon={faMagnifyingGlassDollar} className='text-lg ml-2' />

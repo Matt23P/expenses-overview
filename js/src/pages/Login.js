@@ -49,6 +49,7 @@ function Login() {
                 setLoginSuccess(true);
                 setTimeout(() => {
                     navigate('/');
+                    window.location.reload();
                 }, 5000)
             } else {
                 setErrMsg(response.error);
@@ -120,7 +121,7 @@ function Login() {
                                         Password:
                                     </label>
                                     <input
-                                        type='pwd'
+                                        type='password'
                                         id='pwd'
                                         autoComplete='current-password'
                                         value={pwd}
