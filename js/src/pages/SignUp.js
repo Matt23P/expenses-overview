@@ -43,7 +43,7 @@ function SignUp() {
         if (result) {
             setValMsg('');
         } else {
-            setValMsg('This doesn`t match example@email.com.')
+            setValMsg('Email doesn`t match example@email.com.')
         }
         setValidEmail(result);
     }, [email])
