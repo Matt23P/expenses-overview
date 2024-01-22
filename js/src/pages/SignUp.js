@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Link, Autocomplete, AutocompleteItem } from '@nextui-org/react';
 import { ensureNotAuthenticated } from '../utils/Helpers';
