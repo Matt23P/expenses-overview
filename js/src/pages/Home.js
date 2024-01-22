@@ -14,7 +14,8 @@ function Home() {
                     <div>Easily track your spendings in one place.</div>
                 </div>
                 <div className='flex flex-col text-xl text-center text-gray-600 mt-3'>
-                    Manage your expenses, view analytics, know on what you're spending your money.
+                    Manage your expenses, view analytics, know on what you're spending your money.<br />
+                    Everything as simple as posible!
                 </div>
             </div>
 

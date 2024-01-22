@@ -4,6 +4,9 @@ import './App.css';
 import Home from './pages/Home'
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import Analytics from './pages/Analytics';
+import Expenses from './pages/Expenses';
+import MyAccount from './pages/MyAccount';
 
 function App() {
   return (
@@ -12,6 +15,9 @@ function App() {
         <Route path='/' exac Component={Home} />
         <Route path='/login' exac Component={Login} />
         <Route path='/signup' exac Component={SignUp} />
+        <Route path='/analytics' exac Component={Analytics} />
+        <Route path='/expenses' exac Component={Expenses} />
+        <Route path='/account' exac Component={MyAccount} />
       </Routes>
     </Router>
     // <div className="App">

@@ -1,7 +1,7 @@
 import React from 'react'
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Dropdown, DropdownMenu, DropdownTrigger, DropdownItem } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoins } from '@fortawesome/free-solid-svg-icons';
+import { faCoins, faUser, faGear, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { EoUser } from '../utils/EoUser';
 
 function NavbarComp() {
@@ -19,13 +19,27 @@ function NavbarComp() {
                 {EoUser.isLogged ? (
                     <NavbarContent justify="end">
                         <NavbarItem className="hidden lg:flex gap-4">
-                            <Link href="/expenses" color='foreground' className='text-lg'>Expenses</Link>
+                            <Link href="/expenses" color='foreground' className='text-lg' >Expenses</Link>
                         </NavbarItem>
                         <NavbarItem className="hidden lg:flex gap-4">
-                            <Link href="/analytics" color='foreground' className='text-lg'>Analytics</Link>
+                            <Link href="/analytics" color='foreground' className='text-lg' >Analytics</Link>
                         </NavbarItem>
-                        <NavbarItem>
-                            <Link href="/" color='foreground' className='text-lg' onClick={() => { EoUser.logout() }}>Logout</Link>
+                        <NavbarItem className="hidden lg:flex gap-4">
+                            <Dropdown className='mt-5'>
+                                <DropdownTrigger>
+                                    <FontAwesomeIcon icon={faUser} className='text-2xl cursor-pointer' />
+                                </DropdownTrigger>
+                                <DropdownMenu aria-label="Link Actions">
+                                    <DropdownItem key="home" href="/account">
+                                        <FontAwesomeIcon icon={faGear} className='mr-3' />
+                                        Setting
+                                    </DropdownItem>
+                                    <DropdownItem key="about" href="/" onClick={() => { EoUser.logout() }} color="danger" className='text-danger'>
+                                        <FontAwesomeIcon icon={faRightFromBracket} className='mr-3' />
+                                        Logout
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
                         </NavbarItem>
                     </NavbarContent>
                 ) : (

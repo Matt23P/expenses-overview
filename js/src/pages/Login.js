@@ -5,9 +5,8 @@ import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { EoUser } from '../utils/EoUser';
 import { ensureNotAuthenticated } from '../utils/Helpers';
-import '../styles/Login.css';
 import { login } from '../utils/Backend';
-
+import Spinner from '../components/Spinner';
 
 function Login() {
     const navigate = useNavigate();
@@ -50,7 +49,7 @@ function Login() {
                 setTimeout(() => {
                     navigate('/');
                     window.location.reload();
-                }, 5000)
+                }, 4000)
             } else {
                 setErrMsg(response.error);
             }
@@ -84,18 +83,7 @@ function Login() {
                         </div>
 
                         <div className='mt-12'>
-                            <div class="spinner">
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                                <div></div>
-                            </div>
+                            <Spinner />
                         </div>
                     </>
                 ) : (
