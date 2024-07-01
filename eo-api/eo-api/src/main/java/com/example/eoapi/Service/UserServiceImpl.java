@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -45,8 +46,8 @@ public class UserServiceImpl implements UserService {
                 String username = request.getUsername();
                 String userCurrency = request.getUserCurrency();
 
-                String error = validateUserData(pwd, email, username, userCurrency);
-                if (!error.isEmpty() || !error.isBlank()) {
+                List<String> error = validateUserData(pwd, email, username, userCurrency);
+                if (!error.isEmpty()) {
                     return new StatusMessage(false, error);
                 }
 
@@ -56,16 +57,16 @@ public class UserServiceImpl implements UserService {
                     userRepository.save(user);
                 } catch (JpaSystemException exception) {
                     logger.log(Level.WARNING, "Couldn't create new user: " + exception.getMessage());
-                    return new StatusMessage(false, "Error while creating user - please try again later.");
+                    return new StatusMessage(false, Collections.singletonList("Error while creating user - please try again later."));
                 }
-                return new StatusMessage(true, "");
+                return new StatusMessage(true, Collections.singletonList(""));
             } else {
                 logger.log(Level.INFO, "User with username {" + request.getUsername() + "} already exists.");
-                return new StatusMessage(false, "User with given username already exists.");
+                return new StatusMessage(false, Collections.singletonList("User with given username already exists."));
             }
         } else {
             logger.log(Level.INFO, "User with email {" + request.getEmail() + "} already exists.");
-            return new StatusMessage(false, "User with given email already exists.");
+            return new StatusMessage(false, Collections.singletonList("User with given email already exists."));
         }
     }
 
@@ -96,7 +97,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private String validateUserData(String pwd, String email, String username, String currency) {
+    private List<String> validateUserData(String pwd, String email, String username, String currency) {
         List<String> errors = new ArrayList<>();
         Pattern patternUsername = Pattern.compile(USERNAME_REGEX);
         Pattern patternEmail = Pattern.compile(EMAIL_REGEX);
@@ -130,6 +131,6 @@ public class UserServiceImpl implements UserService {
         }
 
         logger.log(Level.INFO, "Errors encountered during user data validation: " + errors);
-        return String.join(" ", errors);
+        return errors;
     }
 }

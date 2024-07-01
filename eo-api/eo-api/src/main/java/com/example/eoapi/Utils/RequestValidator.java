@@ -3,8 +3,10 @@ package com.example.eoapi.Utils;
 import com.example.eoapi.Request.CreateUserRequest;
 import com.example.eoapi.Request.LoginRequest;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 @NoArgsConstructor
+@Component
 public class RequestValidator {
 
     public boolean validateLoginRequest(LoginRequest request) {

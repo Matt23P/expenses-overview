@@ -5,16 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
+public class LoginRequest implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 2415980068122614705L;
     private String email;
     private String password;
-
-    @Override
-    public String toString() {
-        return "\nemail: " + email + "\n" + "password: " + password;
-    }
 }

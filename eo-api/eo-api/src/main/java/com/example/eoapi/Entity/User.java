@@ -18,8 +18,8 @@ import java.util.UUID;
 public class User {
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID userId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int userId;
 
     @Column(name = "email", nullable = false)
     private String email;

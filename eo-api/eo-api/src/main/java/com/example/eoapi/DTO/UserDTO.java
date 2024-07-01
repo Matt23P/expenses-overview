@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -12,8 +14,10 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
-    private UUID id;
+public class UserDTO implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -4073113352673849174L;
+    private int id;
     private String username;
     private String email;
     private LocalDate creationDate;
