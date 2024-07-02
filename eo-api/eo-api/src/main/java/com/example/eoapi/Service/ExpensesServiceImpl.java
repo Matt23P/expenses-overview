@@ -12,6 +12,7 @@ import com.example.eoapi.Repository.YearsRepository;
 import com.example.eoapi.Request.CreateEntryRequest;
 import com.example.eoapi.Request.GetUserEntriesRequest;
 import com.example.eoapi.Response.StatusMessage;
+import com.example.eoapi.Response.UserTimelineResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,21 +34,6 @@ public class ExpensesServiceImpl implements ExpensesService{
     private EntriesRepository entriesRepository;
     @Autowired
     private UserRepository userRepository;
-
-
-    @Override
-    public List<Years> getUserYears(int userId) {
-        if (userRepository.existsById(userId)) {
-            List <Years> yearsList = yearsRepository.getYearsByUserId(userId);
-            if (!yearsList.isEmpty()) {
-                return yearsList;
-            }
-            log.info("User years list empty");
-        } else {
-            log.info("No such user with id {}", userId);
-        }
-        return null;
-    }
 
     @Override
     public StatusMessage addUserYears(int userId, String year) {
@@ -71,20 +57,6 @@ public class ExpensesServiceImpl implements ExpensesService{
             log.error("Error while adding year for user {} :  {}", userId, ex.getMessage());
             return new StatusMessage(false, Collections.singletonList("Error while creating new year. Please try again later."));
         }
-    }
-
-    @Override
-    public List<Months> getUserMonthsForGivenYear(int userId, int yearId) {
-        if (userRepository.existsById(userId) && yearsRepository.existsById(yearId)) {
-            List<Months> monthsList = monthsRepository.getMonthsByUserIdAndYearId(userId, yearId);
-            if (!monthsList.isEmpty()) {
-                return monthsList;
-            }
-            log.info("User months list empty");
-        } else {
-            log.info("User or year with given ID doesn't exists");
-        }
-        return null;
     }
 
     @Override
@@ -113,22 +85,93 @@ public class ExpensesServiceImpl implements ExpensesService{
     }
 
     @Override
-    public List<Days> getUserDaysForGivenYearAndMonth(int userId, int yearId, int monthId) {
-        return null;
-    }
-
-    @Override
     public StatusMessage addUserDays(int userId, int yearId, int monthId, String day) {
-        return null;
+        if (!userRepository.existsById(userId) || !yearsRepository.existsById(yearId) || !monthsRepository.existsById(monthId)) {
+            log.error("User/year/month doesn't exist");
+            return new StatusMessage(false, Collections.singletonList("User/year/month doesn't exist"));
+        } else if (daysRepository.existsByUserIdAndYearIdAndMonthIdAndDay(userId, yearId, monthId, day)) {
+            log.error("Day {} already exists in this month for user {}", day, userId);
+            return new StatusMessage(false, Collections.singletonList("This day already exists in given month"));
+        }
+
+        Days newDay = Days.builder()
+                .userId(userId)
+                .yearId(yearId)
+                .monthId(monthId)
+                .day(day)
+                .build();
+
+        try {
+            daysRepository.save(newDay);
+            log.info("Day successfully created for user {}", userId);
+            return new StatusMessage(true, Collections.singletonList(""));
+        } catch (Exception ex) {
+            log.error("Error while adding day for user {} :  {}", userId, ex.getMessage());
+            return new StatusMessage(false, Collections.singletonList("Error while creating new Day. Please try again later."));
+        }
     }
 
     @Override
     public List<Entries> getUserEntriesForGivenYearAndMonthAndDay(GetUserEntriesRequest request) {
+        if (userRepository.existsById(request.getUserId())) {
+            List<Entries> entriesList = entriesRepository.getEntriesByUserIdAndYearAndMonthAndDay(request.getUserId(),
+                    request.getYear(), request.getMonth(), request.getDay());
+            if (!entriesList.isEmpty()) {
+                return entriesList;
+            }
+            log.info("User entries list empty");
+        } else {
+            log.info("User with ID {} doesn't exists", request.getUserId());
+        }
         return null;
     }
 
     @Override
     public StatusMessage addUserEntry(CreateEntryRequest request) {
-        return null;
+        if (userRepository.existsById(request.getUserId())) {
+            try {
+                Entries newEntry = Entries.builder()
+                        .userId(request.getUserId())
+                        .amount(request.getAmount())
+                        .description(request.getDescription())
+                        .type(request.getType())
+                        .income(request.isIncome())
+                        .currency(request.getCurrency())
+                        .year(request.getYear())
+                        .month(request.getMonth())
+                        .day(request.getDay())
+                        .build();
+                entriesRepository.save(newEntry);
+                return new StatusMessage(true, Collections.singletonList(""));
+            } catch (Exception ex) {
+                log.error("Error while adding entry for user {} :  {}", request.getUserId(), ex.getMessage());
+                return new StatusMessage(false, Collections.singletonList(
+                        "Error while adding entry for user - please try again later"));
+            }
+        } else {
+            log.info("User with ID {} does not exists", request.getUserId());
+            return new StatusMessage(false, Collections.singletonList("User doesn't exist"));
+        }
+    }
+
+    @Override
+    public UserTimelineResponse getUserTimeline(int userId) {
+        if (userRepository.existsById(userId)) {
+            try {
+                List<Years> yearsList = yearsRepository.getYearsByUserId(userId);
+                List<Months> monthsList = monthsRepository.getMonthsByUserId(userId);
+                List<Days> daysList = daysRepository.getDaysByUserId(userId);
+                return new UserTimelineResponse(yearsList, monthsList, daysList, true,
+                        Collections.singletonList(""));
+            } catch (Exception ex) {
+                log.error("Error while getting user yrs, mnths, days for user {} :  {}", userId, ex.getMessage());
+                return new UserTimelineResponse(null, null, null, false,
+                        Collections.singletonList("Error while fetching data - please try again later"));
+            }
+        } else {
+            log.error("User with ID {} does not exist", userId);
+            return new UserTimelineResponse(null, null, null, false,
+                    Collections.singletonList("User doesn't exist"));
+        }
     }
 }

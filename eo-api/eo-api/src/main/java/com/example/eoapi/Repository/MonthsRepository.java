@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface MonthsRepository extends JpaRepository<Months, Integer> {
     List<Months> getMonthsByUserIdAndYearId(Integer userId, Integer yearId);
+    List<Months> getMonthsByUserId(Integer userId);
     boolean existsByUserIdAndYearIdAndMonth(Integer userId, Integer yearId, String month);
 }
