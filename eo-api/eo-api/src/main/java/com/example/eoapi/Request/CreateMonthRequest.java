@@ -1,5 +1,6 @@
 package com.example.eoapi.Request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 import java.io.Serial;
@@ -11,5 +12,6 @@ public class CreateMonthRequest implements Serializable {
     private static final long serialVersionUID = 7430585846605967356L;
     private int userId;
     private int yearId;
+    @NotNull
     private String month;
 }

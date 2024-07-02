@@ -9,6 +9,7 @@ import com.example.eoapi.Request.GetUserEntriesRequest;
 import com.example.eoapi.Response.StatusMessage;
 import com.example.eoapi.Response.UserTimelineResponse;
 import com.example.eoapi.Service.ExpensesService;
+import com.example.eoapi.Utils.RequestValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,23 +30,38 @@ import java.util.List;
 public class ExpensesController {
     @Autowired
     private ExpensesService expensesService;
+    @Autowired
+    private RequestValidator requestValidator;
 
     @PostMapping(path = "/year")
     public ResponseEntity<StatusMessage> addUserYears(@RequestBody CreateYearRequest request) {
-        StatusMessage statusMessage = expensesService.addUserYears(request.getUserId(), request.getYear());
-        return ResponseEntity.ok(statusMessage);
+        if (requestValidator.validateYear(request.getYear())) {
+            StatusMessage statusMessage = expensesService.addUserYears(request.getUserId(), request.getYear());
+            return ResponseEntity.ok(statusMessage);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @PostMapping(path = "/month")
     public ResponseEntity<StatusMessage> addUserMonths(@RequestBody CreateMonthRequest request) {
-        StatusMessage statusMessage = expensesService.addUserMonths(request.getUserId(), request.getYearId(), request.getMonth());
-        return ResponseEntity.ok(statusMessage);
+        if (requestValidator.validateMonth(request.getMonth())) {
+            StatusMessage statusMessage = expensesService.addUserMonths(request.getUserId(), request.getYearId(), request.getMonth());
+            return ResponseEntity.ok(statusMessage);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping(path = "/days")
     public ResponseEntity<StatusMessage> addUserDay(@RequestBody CreateDayRequest request) {
-        StatusMessage statusMessage = expensesService.addUserDays(request.getUserId(), request.getYearId(), request.getMonthId(), request.getDay());
-        return ResponseEntity.ok(statusMessage);
+        if (requestValidator.validateDay(request.getDay())) {
+            StatusMessage statusMessage = expensesService.addUserDays(request.getUserId(), request.getYearId(), request.getMonthId(), request.getDay());
+            return ResponseEntity.ok(statusMessage);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping(path = "/entries/read")
@@ -60,8 +76,13 @@ public class ExpensesController {
 
     @PostMapping(path = "/entries/add")
     public ResponseEntity<StatusMessage> addUserEntry(@RequestBody CreateEntryRequest request) {
-        StatusMessage response = expensesService.addUserEntry(request);
-        return ResponseEntity.ok(response);
+        if (requestValidator.validateNewEntry(request)) {
+            StatusMessage response = expensesService.addUserEntry(request);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @GetMapping(path = "/timeline/{userId}")

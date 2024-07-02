@@ -1,5 +1,6 @@
 package com.example.eoapi.Request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -14,5 +15,6 @@ public class CreateDayRequest implements Serializable {
     private int userId;
     private int yearId;
     private int monthId;
+    @NotNull
     private String day;
 }

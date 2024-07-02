@@ -17,11 +17,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.example.eoapi.Utils.Constants.EMAIL_REGEX;
+import static com.example.eoapi.Utils.Constants.PWD_REGEX;
+import static com.example.eoapi.Utils.Constants.USERNAME_REGEX;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,11 +32,6 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    private static final String PWD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,32}$";
-    private static final String EMAIL_REGEX = "^(([^<>()[\\\\]\\\\.,;:\\s@\\\"]+(\\.[^<>()[\\\\]\\\\.,;:\\s@\\\"]+)*)|(\\\".+\\\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
-
-    private static final String USERNAME_REGEX = "^[a-zA-Z0-9](?:[a-zA-Z0-9 ]*[a-zA-Z0-9])?$";
 
     private final Logger logger = Logger.getLogger(getClass().getName());
 
